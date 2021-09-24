@@ -9,7 +9,10 @@ import argparse
 import pprint
 import re
 import string
-from rouge import Rouge
+try:
+    from rouge import Rouge
+except:
+    pass
 
 from collections import Counter
 

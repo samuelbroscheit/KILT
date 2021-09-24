@@ -77,3 +77,7 @@ notebook/.ipynb_checkpoints
 
 # Mac os x stuff
 .DS_Store
+
+# IDE staff
+.idea
+/kilt_internal/local_data/

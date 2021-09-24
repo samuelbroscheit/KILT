@@ -30,68 +30,6 @@ def normalize_answer(s):
     return remove_punc(lower(s))
 
 
-def validate_datapoint(datapoint, logger):
-
-    # input is a string
-    if not isinstance(datapoint["input"], str):
-        if logger:
-            logger.warning(
-                "[{}] input is not a string {}".format(
-                    datapoint["id"], datapoint["input"]
-                )
-            )
-        return False
-
-    # output is not empty
-    if "output" in datapoint:
-        if len(datapoint["output"]) == 0:
-            if logger:
-                logger.warning("[{}] empty output".format(datapoint["id"]))
-            return False
-
-        for output in datapoint["output"]:
-            # answer is a string
-            if "answer" in output:
-                if not isinstance(output["answer"], str):
-                    if logger:
-                        logger.warning(
-                            "[{}] answer is not a string {}".format(
-                                datapoint["id"], output["answer"]
-                            )
-                        )
-                    return False
-
-            # provenance is not empty
-            # if len(output["provenance"]) == 0:
-            #    if logger:
-            #        logger.warning("[{}] empty provenance".format(datapoint["id"]))
-            #    return False
-
-            if "provenance" in output:
-                for provenance in output["provenance"]:
-                    # wikipedia_id is provided
-                    if not isinstance(provenance["wikipedia_id"], str):
-                        if logger:
-                            logger.warning(
-                                "[{}] wikipedia_id is not a string {}".format(
-                                    datapoint["id"], provenance["wikipedia_id"]
-                                )
-                            )
-                        return False
-
-                    # title is provided
-                    if not isinstance(provenance["title"], str):
-                        if logger:
-                            logger.warning(
-                                "[{}] title is not a string {}".format(
-                                    datapoint["id"], provenance["title"]
-                                )
-                            )
-                        return False
-
-    return True
-
-
 def load_data(filename):
     data = []
     with open(filename, "r") as fin:

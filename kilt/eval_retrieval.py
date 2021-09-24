@@ -13,6 +13,7 @@ from kilt import kilt_utils
 from kilt import eval_downstream
 
 
+
 def _remove_duplicates(obj):
     obj_tmp = []
     for o in obj:
@@ -220,6 +221,9 @@ def get_ranking_metrics(guess_item, gold_item, ks, rank_keys):
     ), f"guess should provide exactly one output for {guess_item['id']}"
 
     Rprec = rprecision(guess_item, gold_item, rank_keys=rank_keys)
+
+    len_guess_ids = len(_get_ids_list(guess_item, rank_keys)[0])
+
     for k in ks:
 
         # 0. get rank
@@ -230,15 +234,15 @@ def get_ranking_metrics(guess_item, gold_item, ks, rank_keys):
         if num_distinct_evidence_sets > 0:
 
             # 1. precision
-            P_at_k["precision@{}".format(k)] = _precision_at_k(rank, k)
+            P_at_k["precision@{}".format(k)] = _precision_at_k(rank, k) if k <= len_guess_ids else float('nan')
 
             # 2. recall
             R_at_k["recall@{}".format(k)] = _recall_at_k(
                 rank, num_distinct_evidence_sets, k
-            )
+            )  if k <= len_guess_ids else float('nan')
 
             # 3. success rate
-            S_at_k["success_rate@{}".format(k)] = _success_rate_at_k(rank, k)
+            S_at_k["success_rate@{}".format(k)] = _success_rate_at_k(rank, k)  if k <= len_guess_ids else float('nan')
 
         # 4. answer in context
         A_at_k["answer_in_context@{}".format(k)] = _answer_in_context_at_k(
