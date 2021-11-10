@@ -80,6 +80,31 @@ def main(cfg):
         else:
             raise Exception("No default configuration for dpr_wafer!")
 
+    elif cfg.retriever == "dpr_wafer_reranker":
+        from kilt_internal.retrievers import DPR_Wafer_Reranker_connector
+
+        if cfg.retriever_config:
+            # for overriding the retriever's config cfg.checkpoint_dir
+            if hasattr(cfg, "checkpoint_dir"):
+                kwargs = {
+                    "checkpoint_dir": cfg.checkpoint_dir,
+                    "retrieved_data_files": cfg.retrieved_data_files,
+                    "retrieved_data_nr_ctxs": cfg.retrieved_data_nr_ctxs,
+                }
+            else:
+                kwargs = {}
+            retriever = DPR_Wafer_Reranker_connector.DPR.from_config_file(
+                cfg.retriever, cfg.retriever_config, **kwargs,
+            )
+            if cfg.output_folder is None or len(cfg.output_folder) == 0:
+                # if cfg.shard_id and cfg.num_shards:
+                #     cfg.output_folder = f"{retriever.cfg.checkpoint_dir}/predictions/{retriever.cfg.checkpoint_load_suffix}__{retriever.cfg.ctx_src}_shard_{cfg.shard_id}"
+                # else:
+                cfg.output_folder = f"{retriever.cfg.checkpoint_dir}/predictions/{retriever.cfg.checkpoint_load_suffix}__{retriever.cfg.ctx_src}"
+
+        else:
+            raise Exception("No default configuration for dpr_wafer_reranker!")
+
     elif cfg.retriever == "dpr_wafer_remote":
         from kilt_internal.retrievers import DPR_Wafer_RemoteIndex_connector
 
