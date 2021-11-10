@@ -44,7 +44,7 @@ class DPR(Retriever):
         tensorizer, encoder, _ = init_biencoder_components(
             self.args.encoder_model_type, self.args, inference_only=True
         )
-        encoder = encoder.crossencoder_model
+        encoder = encoder.biencoder_model
         encoder, _ = setup_for_distributed_mode(
             encoder,
             None,
