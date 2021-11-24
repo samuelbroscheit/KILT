@@ -37,7 +37,11 @@ class Retriever(ABC):
         return cls(name, **config)
 
     @abstractmethod
-    def feed_data(self, queries_data, logger=None):
+    def get_queries_data(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def set_queries_data(self, queries_data):
         """
         fed all data to the retriever, that will take care of batchify it
         each element in queries_data has an id and a query
@@ -52,6 +56,24 @@ class Retriever(ABC):
         ]
         """
         raise NotImplementedError
+
+
+    # @abstractmethod
+    # def feed_data(self, queries_data, logger=None):
+    #     """
+    #     fed all data to the retriever, that will take care of batchify it
+    #     each element in queries_data has an id and a query
+    #
+    #     Args:
+    #     queries_data (list): list of dicts with two fields: (1) 'id' -> id of the query: (2) 'query' -> text of the query
+    #
+    #     Example:
+    #     queries_data = [
+    #         {'id': '-4203908294749842710', 'query': 'what is the definition of bcc in email'},
+    #         ...
+    #     ]
+    #     """
+    #     raise NotImplementedError
 
     @abstractmethod
     def run(self):
