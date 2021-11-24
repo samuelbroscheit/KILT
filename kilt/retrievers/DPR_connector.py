@@ -12,7 +12,7 @@ import pickle
 
 from dpr.utils.model_utils import (
     load_states_from_checkpoint,
-    setup_for_distributed_mode,
+    setup_fp16_and_distributed_mode,
     get_model_obj,
 )
 from dpr.options import set_encoder_params_from_state
@@ -45,7 +45,7 @@ class DPR(Retriever):
             self.args.encoder_model_type, self.args, inference_only=True
         )
         encoder = encoder.biencoder_model
-        encoder, _ = setup_for_distributed_mode(
+        encoder, _ = setup_fp16_and_distributed_mode(
             encoder,
             None,
             self.args.device,
